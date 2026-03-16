@@ -2,6 +2,7 @@
 import { Splitpanes, Pane } from 'splitpanes'
 import MarkdownPane from './components/MarkdownPane.vue'
 import BBCodePane from './components/BBCodePane.vue'
+import SettingsPanel from './components/SettingsPanel.vue'
 </script>
 
 <template>
@@ -9,6 +10,7 @@ import BBCodePane from './components/BBCodePane.vue'
     <header class="app-header">
       <h1>Markdown to Bitrix BBCode</h1>
     </header>
+    <SettingsPanel />
     <main class="app-main">
       <splitpanes class="default-theme">
         <pane min-size="20">

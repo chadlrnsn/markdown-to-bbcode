@@ -3,50 +3,107 @@ import remarkParse from 'remark-parse'
 import remarkGfm from 'remark-gfm'
 import type { Root, Content } from 'mdast'
 
-function renderNode(node: Content | Root): string {
+export interface ParserSettings {
+  headings: boolean
+  lists: boolean
+  tables: boolean
+  quotes: boolean
+  formatting: boolean
+  links: boolean
+  images: boolean
+  code: boolean
+}
+
+/**
+ * Renders children of a node, preserving the original vertical spacing (newlines) 
+ * by checking the position of each node in the source Markdown.
+ */
+function renderChildren(children: Content[], settings: ParserSettings): string {
+  if (!children || children.length === 0) return ''
+  
+  let result = ''
+  for (let i = 0; i < children.length; i++) {
+    const child = children[i]
+    if (!child) continue
+    
+    result += renderNode(child, settings)
+    
+    // Add original gap between this child and the next one
+    if (i < children.length - 1) {
+      const next = children[i + 1]
+      if (next && child.position && next.position) {
+        const gap = next.position.start.line - child.position.end.line
+        if (gap > 0) {
+          result += '\n'.repeat(gap)
+        }
+      } else if (child) {
+        // Fallback if position is missing
+        if (['paragraph', 'heading', 'list', 'table', 'blockquote', 'code', 'thematicBreak'].includes(child.type)) {
+          result += '\n'
+        }
+      }
+    }
+  }
+  return result
+}
+
+function renderNode(node: Content | Root, settings: ParserSettings): string {
   switch (node.type) {
     case 'root':
-      return node.children.map(renderNode).join('')
-    case 'paragraph': {
-      const content = node.children.map(renderNode).join('')
-      if (!content.trim()) return ''
-      // Bitrix renders a single newline as a break, so \n\n creates an empty line.
-      // Usually, \n is sufficient for block separation in Bitrix tasks/comments.
-      return content + '\n'
-    }
+      return renderChildren(node.children, settings)
+      
+    case 'paragraph':
+      return renderChildren(node.children, settings)
+      
     case 'text':
       return node.value
-    case 'strong':
-      return `[B]${node.children.map(renderNode).join('')}[/B]`
-    case 'emphasis':
-      return `[I]${node.children.map(renderNode).join('')}[/I]`
-    case 'delete':
-      return `[S]${node.children.map(renderNode).join('')}[/S]`
+      
+    case 'strong': {
+      const content = renderChildren(node.children, settings)
+      return settings.formatting ? `[B]${content}[/B]` : content
+    }
+    
+    case 'emphasis': {
+      const content = renderChildren(node.children, settings)
+      return settings.formatting ? `[I]${content}[/I]` : content
+    }
+    
+    case 'delete': {
+      const content = renderChildren(node.children, settings)
+      return settings.formatting ? `[S]${content}[/S]` : content
+    }
+    
     case 'inlineCode':
-      return `[CODE]${node.value}[/CODE]`
+      return settings.code ? `[CODE]${node.value}[/CODE]` : node.value
+      
     case 'code':
-      return `[CODE]\n${node.value}\n[/CODE]\n`
+      return settings.code ? `[CODE]\n${node.value}\n[/CODE]` : node.value
+      
     case 'blockquote': {
-      const content = node.children.map(renderNode).join('').trim()
-      // Bitrix style quotes: each line starts with >>
+      const content = renderChildren(node.children, settings).trim()
+      if (!settings.quotes) return content
       const quotedLines = content
         .split('\n')
         .map(line => `>> ${line}`)
         .join('\n')
-      return `${quotedLines}\n`
+      return quotedLines
     }
+    
     case 'list': {
+      const content = renderChildren(node.children, settings).trim()
+      if (!settings.lists) return content
       const type = (node as any).ordered ? '=1' : ''
-      // Bitrix is extremely sensitive to newlines inside [LIST]. 
-      // We join items without ANY spaces or newlines around tags.
-      const items = node.children.map(renderNode).join('').trim()
-      return `[LIST${type}]${items}[/LIST]\n`
+      return `[LIST${type}]${content}[/LIST]`
     }
-    case 'listItem':
-      // Bitrix list items MUST start with [*]. We trim to ensure no extra spaces.
-      // We also ensure no trailing newlines within the item itself to avoid double spacing in lists.
-      return `[*]${node.children.map(renderNode).join('').trim()}`
+    
+    case 'listItem': {
+      const content = renderChildren(node.children, settings).trim()
+      return settings.lists ? `[*]${content}` : content
+    }
+    
     case 'heading': {
+      const content = renderChildren(node.children, settings)
+      if (!settings.headings) return content
       const sizes: Record<number, number> = {
         1: 24,
         2: 20,
@@ -56,37 +113,46 @@ function renderNode(node: Content | Root): string {
         6: 12
       }
       const size = sizes[node.depth] || 14
-      const content = node.children.map(renderNode).join('')
-      return `[SIZE=${size}][B]${content}[/B][/SIZE]\n`
+      return `[SIZE=${size}][B]${content}[/B][/SIZE]`
     }
-    case 'link':
-      return `[URL=${node.url}]${node.children.map(renderNode).join('')}[/URL]`
+    
+    case 'link': {
+      const content = renderChildren(node.children, settings)
+      return settings.links ? `[URL=${node.url}]${content}[/URL]` : `${content} (${node.url})`
+    }
+    
     case 'image':
-      return `[IMG]${node.url}[/IMG]`
+      return settings.images ? `[IMG]${node.url}[/IMG]` : `(Image: ${node.url})`
+      
     case 'thematicBreak':
-      return `[HR]\n`
+      return `[HR]`
+      
     case 'break':
       return `\n`
-    case 'table':
-      // Bitrix tables MUST NOT have ANY newlines between tags.
-      const tableContent = node.children.map(renderNode).join('').trim()
-      return `[TABLE]${tableContent}[/TABLE]\n`
+      
+    case 'table': {
+      const tableContent = renderChildren(node.children, settings).trim()
+      return settings.tables ? `[TABLE]${tableContent}[/TABLE]` : tableContent
+    }
+    
     case 'tableRow':
-      return `[TR]${node.children.map(renderNode).join('')}[/TR]`
+      return `[TR]${renderChildren(node.children, settings)}[/TR]`
+      
     case 'tableCell':
-      return `[TD]${node.children.map(renderNode).join('')}[/TD]`
+      return `[TD]${renderChildren(node.children, settings)}[/TD]`
+      
     default:
       if ('children' in node) {
-        return (node.children as Content[]).map(renderNode).join('')
+        return renderChildren((node as any).children, settings)
       }
       return ''
   }
 }
 
-export function markdownToBBCode(markdown: string): string {
+export function markdownToBBCode(markdown: string, settings: ParserSettings): string {
   try {
     const tree = unified().use(remarkParse).use(remarkGfm).parse(markdown)
-    return renderNode(tree).trim()
+    return renderNode(tree, settings).trim()
   } catch (error) {
     console.error('Error converting markdown to BBCode:', error)
     return ''
