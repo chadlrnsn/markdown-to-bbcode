@@ -1,11 +1,97 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { Splitpanes, Pane } from 'splitpanes'
+import MarkdownPane from './components/MarkdownPane.vue'
+import BBCodePane from './components/BBCodePane.vue'
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <div class="app-container">
+    <header class="app-header">
+      <h1>Markdown to Bitrix BBCode</h1>
+    </header>
+    <main class="app-main">
+      <splitpanes class="default-theme">
+        <pane min-size="20">
+          <MarkdownPane />
+        </pane>
+        <pane min-size="20">
+          <BBCodePane />
+        </pane>
+      </splitpanes>
+    </main>
+  </div>
 </template>
 
-<style scoped></style>
+<style>
+/* Global resets for the app container */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+#app {
+  height: 100vh;
+}
+</style>
+
+<style scoped>
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.app-header {
+  padding: 16px 24px;
+  background-color: #1f2937;
+  color: white;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.app-main {
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Custom styling for splitpanes */
+:deep(.splitpanes__pane) {
+  background-color: white;
+}
+
+:deep(.splitpanes__splitter) {
+  background-color: #e5e7eb;
+  position: relative;
+}
+
+:deep(.splitpanes__splitter:before) {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  transition: opacity 0.4s;
+  background-color: rgba(59, 130, 246, 0.3);
+  opacity: 0;
+  z-index: 1;
+}
+
+:deep(.splitpanes__splitter:hover:before) {
+  opacity: 1;
+}
+
+:deep(.splitpanes--vertical > .splitpanes__splitter:before) {
+  left: -2px;
+  right: -2px;
+  height: 100%;
+}
+
+:deep(.splitpanes--horizontal > .splitpanes__splitter:before) {
+  top: -2px;
+  bottom: -2px;
+  width: 100%;
+}
+</style>
