@@ -12,7 +12,7 @@ export function markdownToHtml(markdown: string): string {
       .processSync(markdown)
     return String(file)
   } catch (error) {
-    console.error('Error parsing markdown to HTML:', error)
+    console.error('Error parsing markdown to HTML:', error instanceof Error ? error.message : String(error))
     return ''
   }
 }

@@ -15,6 +15,7 @@
         </select>
         <button @click="applyFormat('B')" title="Bold"><b>B</b></button>
         <button @click="applyFormat('I')" title="Italic"><i>I</i></button>
+        <button @click="applyFormat('U')" title="Underline"><u>U</u></button>
       </div>
     </div>
 
@@ -39,13 +40,14 @@
         <button @click="applyFormat('COLOR', selectedColor)" :style="{ color: selectedColor }">Color</button>
         <button @click="applyFormat('SIZE', selectedSize || '16')">Size</button>
         <button @click="applyFormat('B')"><b>B</b></button>
+        <button @click="applyFormat('U')"><u>U</u></button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, shallowRef, onBeforeUnmount } from 'vue'
+import { ref, shallowRef } from 'vue'
 import { useEditorStore } from '../stores/editor'
 import type * as monaco from 'monaco-editor'
 

@@ -20,7 +20,7 @@
       </label>
       <label class="setting-item">
         <input type="checkbox" v-model="store.settings.formatting" />
-        Formatting (B/I/S)
+        Formatting (B/I/S/U)
       </label>
       <label class="setting-item">
         <input type="checkbox" v-model="store.settings.links" />

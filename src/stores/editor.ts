@@ -13,7 +13,7 @@ export const useEditorStore = defineStore('editor', () => {
     lists: true,
     tables: true,
     quotes: true,
-    formatting: true, // bold, italic, strike
+    formatting: true, // bold, italic, strike, underline
     links: true,
     images: true,
     code: true
