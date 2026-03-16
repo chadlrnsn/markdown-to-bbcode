@@ -29,9 +29,69 @@ body, html {
   padding: 0;
   height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f3f4f6;
 }
 #app {
   height: 100vh;
+}
+
+/* Bitrix24 Typography Simulation */
+.ui-typography-container {
+  color: #333;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.ui-typography-container p {
+  margin-bottom: 12px;
+}
+
+.ui-typography-container ul, .ui-typography-container ol {
+  margin: 0 0 12px 20px;
+  padding: 0;
+}
+
+.ui-typography-container li {
+  margin-bottom: 4px;
+}
+
+.ui-typography-container blockquote {
+  border-left: 4px solid #eef2f4;
+  margin: 0 0 12px 0;
+  padding: 8px 16px;
+  color: #525c69;
+  background: #f8fafb;
+}
+
+.ui-typography-container pre {
+  background: #fdfdfd;
+  border: 1px solid #eef2f4;
+  padding: 12px;
+  border-radius: 4px;
+  overflow-x: auto;
+  font-family: monospace;
+}
+
+/* Bitrix24 Table Simulation */
+.b24-table-wrapper {
+  margin-bottom: 16px;
+  overflow-x: auto;
+}
+
+.b24-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #edeef0;
+}
+
+.b24-table td {
+  padding: 10px 15px;
+  border: 1px solid #edeef0;
+  vertical-align: top;
+}
+
+.b24-table tr:nth-child(even) {
+  background-color: #fcfcfc;
 }
 </style>
 

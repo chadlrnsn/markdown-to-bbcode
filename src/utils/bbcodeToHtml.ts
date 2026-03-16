@@ -9,32 +9,35 @@ export function bbcodeToHtml(bbcode: string): string {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
 
-  // BBCode replacements
+  // BBCode replacements (Case Insensitive)
   html = html
-    .replace(/\[b\](.*?)\[\/b\]/gs, '<strong>$1</strong>')
-    .replace(/\[i\](.*?)\[\/i\]/gs, '<em>$1</em>')
-    .replace(/\[s\](.*?)\[\/s\]/gs, '<del>$1</del>')
-    .replace(/\[url=(.*?)\](.*?)\[\/url\]/gs, '<a href="$1" target="_blank">$2</a>')
-    .replace(/\[img\](.*?)\[\/img\]/gs, '<img src="$1" alt="image" style="max-width: 100%;" />')
-    .replace(/\[quote\](.*?)\[\/quote\]/gs, '<blockquote>$1</blockquote>')
-    .replace(/\[code\](.*?)\[\/code\]/gs, '<pre><code>$1</code></pre>')
-    .replace(/\[hr\]/g, '<hr />')
+    .replace(/\[B\](.*?)\[\/B\]/gsi, '<strong>$1</strong>')
+    .replace(/\[I\](.*?)\[\/I\]/gsi, '<em>$1</em>')
+    .replace(/\[S\](.*?)\[\/S\]/gsi, '<del>$1</del>')
+    .replace(/\[URL=(.*?)\](.*?)\[\/URL\]/gsi, '<a href="$1" target="_blank">$2</a>')
+    .replace(/\[IMG\](.*?)\[\/IMG\]/gsi, '<img src="$1" alt="image" style="max-width: 100%;" />')
+    .replace(/\[QUOTE\](.*?)\[\/QUOTE\]/gsi, '<blockquote>$1</blockquote>')
+    .replace(/\[CODE\](.*?)\[\/CODE\]/gsi, '<pre><code>$1</code></pre>')
+    .replace(/\[HR\]/gi, '<hr />')
     
-  // Tables
-  html = html.replace(/\[table\](.*?)\[\/table\]/gs, '<table border="1" style="border-collapse: collapse; width: 100%;">$1</table>')
-  html = html.replace(/\[tr\](.*?)\[\/tr\]/gs, '<tr>$1</tr>')
-  html = html.replace(/\[td\](.*?)\[\/td\]/gs, '<td style="padding: 8px; border: 1px solid #ddd;">$1</td>')
+  // Tables - Bitrix style in preview
+  html = html.replace(/\[TABLE\](.*?)\[\/TABLE\]/gsi, '<div class="b24-table-wrapper"><table class="b24-table">$1</table></div>')
+  html = html.replace(/\[TR\](.*?)\[\/TR\]/gsi, '<tr>$1</tr>')
+  html = html.replace(/\[TD\](.*?)\[\/TD\]/gsi, '<td>$1</td>')
 
-  // Lists
-  html = html.replace(/\[list\](.*?)\[\/list\]/gs, (match, p1) => {
-    const items = p1.replace(/\[\*\](.*?)(?=\[\*\]|$)/gs, '<li>$1</li>')
-    return `<ul>${items}</ul>`
+  // Lists - support both [LIST] and [LIST=1]
+  html = html.replace(/\[LIST(?:=(.*?))?\](.*?)\[\/LIST\]/gsi, (match, type, content) => {
+    const listTag = type === '1' ? 'ol' : 'ul'
+    // Process items recursively or at least replace [*] with <li>
+    const items = content.replace(/\[\*\](.*?)(?=\[\*\]|$)/gsi, '<li>$1</li>')
+    return `<${listTag}>${items}</${listTag}>`
   })
 
-  // Newlines to <br> for everything outside of <pre> or block elements if possible,
-  // Но так как у нас есть таблицы и списки, нужно быть аккуратнее.
-  // Для простоты заменим переноси вне тегов, которые сами создают блоки.
+  // Newlines to <br> but avoid double breaks if tags already handle it
+  // This is tricky with tables. Let's remove newlines inside table/list tags first if they exist.
+  html = html.replace(/(<table.*?>|<\/table>|<tr.*?>|<\/tr>|<td.*?>|<\/td>|<ul.*?>|<\/ul>|<ol.*?>|<\/ol>|<li>|<\/li>)\s*<br \/>/gi, '$1')
+  
   html = html.replace(/\n/g, '<br />')
 
-  return `<div class="bbcode-preview">${html}</div>`
+  return `<div class="ui-typography-container">${html}</div>`
 }

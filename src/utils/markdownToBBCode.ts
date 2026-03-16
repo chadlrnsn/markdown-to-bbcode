@@ -7,46 +7,54 @@ function renderNode(node: Content | Root): string {
   switch (node.type) {
     case 'root':
       return node.children.map(renderNode).join('')
-    case 'paragraph':
-      return node.children.map(renderNode).join('') + '\n\n'
+    case 'paragraph': {
+      const content = node.children.map(renderNode).join('')
+      if (!content.trim()) return ''
+      return content + '\n\n'
+    }
     case 'text':
       return node.value
     case 'strong':
-      return `[b]${node.children.map(renderNode).join('')}[/b]`
+      return `[B]${node.children.map(renderNode).join('')}[/B]`
     case 'emphasis':
-      return `[i]${node.children.map(renderNode).join('')}[/i]`
+      return `[I]${node.children.map(renderNode).join('')}[/I]`
     case 'delete':
-      return `[s]${node.children.map(renderNode).join('')}[/s]`
+      return `[S]${node.children.map(renderNode).join('')}[/S]`
     case 'inlineCode':
-      return `[code]${node.value}[/code]`
+      return `[CODE]${node.value}[/CODE]`
     case 'code':
-      return `[code]\n${node.value}\n[/code]\n\n`
+      return `[CODE]\n${node.value}\n[/CODE]\n\n`
     case 'blockquote':
-      return `[quote]\n${node.children.map(renderNode).join('').trim()}\n[/quote]\n\n`
+      return `[QUOTE]\n${node.children.map(renderNode).join('').trim()}\n[/QUOTE]\n\n`
     case 'list': {
-      const items = node.children.map(renderNode).join('')
-      return `[list]\n${items}[/list]\n\n`
+      const type = (node as any).ordered ? '=1' : ''
+      // Bitrix is extremely sensitive to newlines inside [LIST]. 
+      // We must NOT have newlines between [*] items or around the LIST tags.
+      const items = node.children.map(renderNode).join('').trim()
+      return `[LIST${type}]${items}[/LIST]\n\n`
     }
     case 'listItem':
-      // listItem often contains a paragraph. Let's trim trailing newlines to avoid extra spacing
-      return `[*] ${node.children.map(renderNode).join('').replace(/\n\n$/, '\n')}`
+      // Bitrix list items MUST start with [*]. We trim to ensure no extra spaces.
+      return `[*]${node.children.map(renderNode).join('').trim()}`
     case 'heading': {
-      return `[b]${node.children.map(renderNode).join('')}[/b]\n\n`
+      return `[B]${node.children.map(renderNode).join('')}[/B]\n\n`
     }
     case 'link':
-      return `[url=${node.url}]${node.children.map(renderNode).join('')}[/url]`
+      return `[URL=${node.url}]${node.children.map(renderNode).join('')}[/URL]`
     case 'image':
-      return `[img]${node.url}[/img]`
+      return `[IMG]${node.url}[/IMG]`
     case 'thematicBreak':
-      return `[hr]\n\n`
+      return `[HR]\n\n`
     case 'break':
       return `\n`
     case 'table':
-      return `[table]\n${node.children.map(renderNode).join('')}[/table]\n\n`
+      // Bitrix tables MUST NOT have ANY newlines between [TABLE], [TR], and [TD] tags.
+      const tableContent = node.children.map(renderNode).join('').trim()
+      return `[TABLE]${tableContent}[/TABLE]\n\n`
     case 'tableRow':
-      return `[tr]\n${node.children.map(renderNode).join('')}[/tr]\n`
+      return `[TR]${node.children.map(renderNode).join('')}[/TR]`
     case 'tableCell':
-      return `[td]${node.children.map(renderNode).join('')}[/td]`
+      return `[TD]${node.children.map(renderNode).join('')}[/TD]`
     default:
       if ('children' in node) {
         return (node.children as Content[]).map(renderNode).join('')
@@ -58,7 +66,11 @@ function renderNode(node: Content | Root): string {
 export function markdownToBBCode(markdown: string): string {
   try {
     const tree = unified().use(remarkParse).use(remarkGfm).parse(markdown)
-    return renderNode(tree).trim()
+    let result = renderNode(tree).trim()
+    
+    // Final safety: Remove any double newlines that might have been generated 
+    // inside containers if they weren't caught by the switches.
+    return result
   } catch (error) {
     console.error('Error converting markdown to BBCode:', error)
     return ''
