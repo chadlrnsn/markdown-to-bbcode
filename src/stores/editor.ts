@@ -1,14 +1,16 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { markdownToBBCode } from '../utils/markdownToBBCode'
 import { markdownToHtml } from '../utils/markdownToHtml'
 import { bbcodeToHtml } from '../utils/bbcodeToHtml'
 
 export const useEditorStore = defineStore('editor', () => {
   const markdownText = ref('')
+  const bbcodeText = ref('')
 
-  const bbcodeText = computed(() => {
-    return markdownToBBCode(markdownText.value)
+  // Update BBCode automatically when Markdown changes
+  watch(markdownText, (newValue) => {
+    bbcodeText.value = markdownToBBCode(newValue)
   })
 
   const markdownPreviewHtml = computed(() => {

@@ -24,8 +24,15 @@ function renderNode(node: Content | Root): string {
       return `[CODE]${node.value}[/CODE]`
     case 'code':
       return `[CODE]\n${node.value}\n[/CODE]\n\n`
-    case 'blockquote':
-      return `[QUOTE]\n${node.children.map(renderNode).join('').trim()}\n[/QUOTE]\n\n`
+    case 'blockquote': {
+      const content = node.children.map(renderNode).join('').trim()
+      // Bitrix style quotes: each line starts with >>
+      const quotedLines = content
+        .split('\n')
+        .map(line => `>> ${line}`)
+        .join('\n')
+      return `${quotedLines}\n\n`
+    }
     case 'list': {
       const type = (node as any).ordered ? '=1' : ''
       // Bitrix is extremely sensitive to newlines inside [LIST]. 
@@ -37,7 +44,17 @@ function renderNode(node: Content | Root): string {
       // Bitrix list items MUST start with [*]. We trim to ensure no extra spaces.
       return `[*]${node.children.map(renderNode).join('').trim()}`
     case 'heading': {
-      return `[B]${node.children.map(renderNode).join('')}[/B]\n\n`
+      const sizes: Record<number, number> = {
+        1: 24,
+        2: 20,
+        3: 18,
+        4: 16,
+        5: 14,
+        6: 12
+      }
+      const size = sizes[node.depth] || 14
+      const content = node.children.map(renderNode).join('')
+      return `[SIZE=${size}][B]${content}[/B][/SIZE]\n\n`
     }
     case 'link':
       return `[URL=${node.url}]${node.children.map(renderNode).join('')}[/URL]`

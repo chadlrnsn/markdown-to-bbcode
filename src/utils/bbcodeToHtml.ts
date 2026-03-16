@@ -20,6 +20,22 @@ export function bbcodeToHtml(bbcode: string): string {
     .replace(/\[CODE\](.*?)\[\/CODE\]/gsi, '<pre><code>$1</code></pre>')
     .replace(/\[HR\]/gi, '<hr />')
     
+  // Bitrix style quotes: >> text
+  // We look for lines starting with >> (potentially after some newlines)
+  html = html.replace(/(?:^|<br \/>)>>\s*(.*?)(?=<br \/>|$)/gi, (match, content) => {
+    return `<blockquote>${content}</blockquote>`
+  })
+  // Cleanup adjacent blockquotes if they were multiple lines
+  html = html.replace(/<\/blockquote><br \/><blockquote>/gi, '<br />')
+
+  // Color and Size
+  html = html.replace(/\[COLOR=(.*?)\](.*?)\[\/COLOR\]/gsi, '<span style="color: $1;">$2</span>')
+  html = html.replace(/\[SIZE=(.*?)\](.*?)\[\/SIZE\]/gsi, (match, size, text) => {
+    // Bitrix uses size as relative or absolute. If it's a number, we treat as px.
+    const fontSize = isNaN(Number(size)) ? size : `${size}px`
+    return `<span style="font-size: ${fontSize};">${text}</span>`
+  })
+
   // Tables - Bitrix style in preview
   html = html.replace(/\[TABLE\](.*?)\[\/TABLE\]/gsi, '<div class="b24-table-wrapper"><table class="b24-table">$1</table></div>')
   html = html.replace(/\[TR\](.*?)\[\/TR\]/gsi, '<tr>$1</tr>')
@@ -34,8 +50,7 @@ export function bbcodeToHtml(bbcode: string): string {
   })
 
   // Newlines to <br> but avoid double breaks if tags already handle it
-  // This is tricky with tables. Let's remove newlines inside table/list tags first if they exist.
-  html = html.replace(/(<table.*?>|<\/table>|<tr.*?>|<\/tr>|<td.*?>|<\/td>|<ul.*?>|<\/ul>|<ol.*?>|<\/ol>|<li>|<\/li>)\s*<br \/>/gi, '$1')
+  html = html.replace(/(<table.*?>|<\/table>|<tr.*?>|<\/tr>|<td.*?>|<\/td>|<ul.*?>|<\/ul>|<ol.*?>|<\/ol>|<li>|<\/li>|<blockquote>|<\/blockquote>)\s*<br \/>/gi, '$1')
   
   html = html.replace(/\n/g, '<br />')
 
