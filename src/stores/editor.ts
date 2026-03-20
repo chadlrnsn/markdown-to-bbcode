@@ -16,7 +16,8 @@ export const useEditorStore = defineStore('editor', () => {
     formatting: true, // bold, italic, strike, underline
     links: true,
     images: true,
-    code: true
+    code: true,
+    spoilers: true
   })
 
   // Update BBCode automatically when Markdown or Settings change

@@ -24,6 +24,8 @@ export function bbcodeToHtml(bbcode: string): string {
   ]
 
   const sizeRegex = /\[SIZE=(.*?)\](.*?)\[\/SIZE\]/gsi
+  const spoilerWithTitleRegex = /\[SPOILER=(.*?)\](.*?)\[\/SPOILER\]/gsi
+  const spoilerWithoutTitleRegex = /\[SPOILER\](.*?)\[\/SPOILER\]/gsi
 
   let changed = true
   while (changed) {
@@ -36,6 +38,18 @@ export function bbcodeToHtml(bbcode: string): string {
     html = html.replace(sizeRegex, (match: string, size: string, text: string) => {
       const fontSize = isNaN(Number(size)) ? size : `${size}px`
       return `<span style="font-size: ${fontSize};">${text}</span>`
+    })
+
+    // Handle SPOILER with title
+    html = html.replace(spoilerWithTitleRegex, (match: string, title: string, content: string) => {
+      const wrappedContent = content.trim().startsWith('<p') ? content : `<p class="ui-typography-paragraph ui-text-editor__paragraph ui-text-editor__ltr" dir="ltr"><span data-lexical-text="true">${content}</span></p>`
+      return `<details class="ui-typography-spoiler" open=""><summary tabindex="-1" class="ui-typography-spoiler-title ui-icon-set__scope ui-text-editor__ltr" dir="ltr"><span data-lexical-text="true">${title}</span></summary><div class="ui-typography-spoiler-content">${wrappedContent}</div></details>`
+    })
+
+    // Handle SPOILER without title
+    html = html.replace(spoilerWithoutTitleRegex, (match: string, content: string) => {
+      const wrappedContent = content.trim().startsWith('<p') ? content : `<p class="ui-typography-paragraph ui-text-editor__paragraph ui-text-editor__ltr" dir="ltr"><span data-lexical-text="true">${content}</span></p>`
+      return `<details class="ui-typography-spoiler" open=""><summary tabindex="-1" class="ui-typography-spoiler-title ui-icon-set__scope ui-text-editor__ltr" dir="ltr"><span data-lexical-text="true">Спойлер</span></summary><div class="ui-typography-spoiler-content">${wrappedContent}</div></details>`
     })
 
     changed = html !== startHtml

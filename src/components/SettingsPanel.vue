@@ -34,6 +34,10 @@
         <input type="checkbox" v-model="store.settings.code" />
         Code Blocks
       </label>
+      <label class="setting-item">
+        <input type="checkbox" v-model="store.settings.spoilers" />
+        Spoilers
+      </label>
     </div>
   </div>
 </template>

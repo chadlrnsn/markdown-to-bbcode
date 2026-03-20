@@ -6,6 +6,12 @@
         <button :class="{ active: isPreview }" @click="isPreview = true">BBCode Preview</button>
       </div>
       
+      <div class="actions">
+        <button class="copy-button" @click="copyToClipboard" title="Copy for Bitrix (Maintains formatting and spoilers)">
+          Copy for Bitrix
+        </button>
+      </div>
+
       <!-- Fixed Toolbar -->
       <div v-if="!isPreview" class="toolbar">
         <input type="color" v-model="selectedColor" title="Text Color" @change="applyFormat('COLOR', selectedColor)" />
@@ -82,6 +88,34 @@ const handleEditorMount = (editor: monaco.editor.IStandaloneCodeEditor) => {
   })
 }
 
+const copyToClipboard = async () => {
+  try {
+    const text = store.bbcodeText
+    const html = store.bbcodePreviewHtml
+
+    const typeText = 'text/plain'
+    const typeHtml = 'text/html'
+    
+    const blobText = new Blob([text], { type: typeText })
+    const blobHtml = new Blob([html], { type: typeHtml })
+
+    const data = [
+      new ClipboardItem({
+        [typeText]: blobText,
+        [typeHtml]: blobHtml,
+      }),
+    ]
+
+    await navigator.clipboard.write(data)
+    alert('Copied for Bitrix! Now you can paste it into the Bitrix editor.')
+  } catch (err) {
+    console.error('Failed to copy:', err)
+    // Fallback if ClipboardItem is not supported
+    await navigator.clipboard.writeText(store.bbcodeText)
+    alert('Copied as plain text (formatting might not be preserved).')
+  }
+}
+
 const applyFormat = (tag: string, value?: string) => {
   if (!editorRef.value) return
 
@@ -144,6 +178,23 @@ const handleMouseMove = () => {
   background: #3b82f6;
   color: white;
   border-color: #3b82f6;
+}
+
+.actions {
+  display: flex;
+}
+.copy-button {
+  padding: 6px 12px;
+  cursor: pointer;
+  background: #10b981;
+  color: white;
+  border: 1px solid #059669;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.copy-button:hover {
+  background: #059669;
 }
 
 .toolbar {

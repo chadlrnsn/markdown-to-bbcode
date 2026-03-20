@@ -12,6 +12,7 @@ export interface ParserSettings {
   links: boolean
   images: boolean
   code: boolean
+  spoilers: boolean
 }
 
 interface RenderContext {
@@ -69,11 +70,33 @@ function renderNode(
       return node.value
       
     case 'html': {
-      const value = node.value.toLowerCase()
-      if (value.startsWith('<u') && settings.formatting && !context.inUnderline) {
+      const value = node.value.trim()
+      const lowerValue = value.toLowerCase()
+      
+      if (settings.spoilers) {
+        if (lowerValue.includes('<details')) {
+          const summaryMatch = value.match(/<summary>([\s\S]*?)<\/summary>/i)
+          const title = summaryMatch ? summaryMatch[1].trim() : ''
+          return `[SPOILER${title ? `=${title}` : ''}]`
+        }
+        if (lowerValue.includes('</details>')) {
+          return '[/SPOILER]'
+        }
+        if (lowerValue.includes('<summary')) {
+          const summaryMatch = value.match(/<summary>([\s\S]*?)<\/summary>/i)
+          if (summaryMatch) {
+            // If <summary> is separate from <details>, we still try to render it as a spoiler tag.
+            // This might happen if there's a newline between <details> and <summary>.
+            return `[SPOILER=${summaryMatch[1].trim()}]`
+          }
+          return '' // Ignore raw summary tags if they don't match the pattern
+        }
+      }
+
+      if (lowerValue.startsWith('<u') && settings.formatting && !context.inUnderline) {
         return `[U]`
       }
-      if (value.startsWith('</u>')) return `[/U]`
+      if (lowerValue.startsWith('</u>')) return `[/U]`
       return node.value
     }
 
