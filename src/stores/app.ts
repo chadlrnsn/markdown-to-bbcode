@@ -14,14 +14,22 @@ export const useAppStore = defineStore('app', {
   actions: {
     async fetchChangelog() {
       try {
-        const response = await fetch('/CHANGELOG.md');
-        if (!response.ok) throw new Error('Changelog not found');
+        const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+        const changelogUrl = `${baseUrl}/CHANGELOG.md`;
+        
+        console.log(`Fetching changelog from ${changelogUrl}...`);
+        const response = await fetch(changelogUrl);
+        console.log('Response status:', response.status);
+        
+        if (!response.ok) throw new Error(`Changelog not found: ${response.status} ${response.statusText}`);
         
         const markdown = await response.text();
+        console.log('Changelog content length:', markdown.length);
         
         // Extract version from first H1 (e.g., "# 1.0.1")
         const versionMatch = markdown.match(/^#\s+(.*)/);
-        this.currentVersion = versionMatch ? versionMatch[1].trim() : '0.0.0';
+        this.currentVersion = versionMatch ? versionMatch[1].split('\n')[0].trim() : '0.0.0';
+        console.log('Detected version:', this.currentVersion);
 
         // Convert MD to HTML using existing unified pipeline
         const processed = await unified()
