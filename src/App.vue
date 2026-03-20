@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Splitpanes, Pane } from 'splitpanes'
+import SplitLayout from './components/SplitLayout.vue'
 import MarkdownPane from './components/MarkdownPane.vue'
 import BBCodePane from './components/BBCodePane.vue'
 import SettingsPanel from './components/SettingsPanel.vue'
@@ -12,14 +12,14 @@ import SettingsPanel from './components/SettingsPanel.vue'
     </header>
     <SettingsPanel />
     <main class="app-main">
-      <splitpanes class="default-theme">
-        <pane min-size="20">
+      <SplitLayout>
+        <template #left>
           <MarkdownPane />
-        </pane>
-        <pane min-size="20">
+        </template>
+        <template #right>
           <BBCodePane />
-        </pane>
-      </splitpanes>
+        </template>
+      </SplitLayout>
     </main>
   </div>
 </template>
@@ -118,42 +118,5 @@ body, html {
 .app-main {
   flex: 1;
   overflow: hidden;
-}
-
-/* Custom styling for splitpanes */
-:deep(.splitpanes__pane) {
-  background-color: white;
-}
-
-:deep(.splitpanes__splitter) {
-  background-color: #e5e7eb;
-  position: relative;
-}
-
-:deep(.splitpanes__splitter:before) {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  transition: opacity 0.4s;
-  background-color: rgba(59, 130, 246, 0.3);
-  opacity: 0;
-  z-index: 1;
-}
-
-:deep(.splitpanes__splitter:hover:before) {
-  opacity: 1;
-}
-
-:deep(.splitpanes--vertical > .splitpanes__splitter:before) {
-  left: -2px;
-  right: -2px;
-  height: 100%;
-}
-
-:deep(.splitpanes--horizontal > .splitpanes__splitter:before) {
-  top: -2px;
-  bottom: -2px;
-  width: 100%;
 }
 </style>
