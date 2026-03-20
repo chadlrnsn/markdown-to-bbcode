@@ -76,7 +76,7 @@ function renderNode(
       if (settings.spoilers) {
         if (lowerValue.includes('<details')) {
           const summaryMatch = value.match(/<summary>([\s\S]*?)<\/summary>/i)
-          const title = summaryMatch ? summaryMatch[1].trim() : ''
+          const title = (summaryMatch?.[1] || '').trim()
           return `[SPOILER${title ? `=${title}` : ''}]`
         }
         if (lowerValue.includes('</details>')) {
@@ -84,7 +84,7 @@ function renderNode(
         }
         if (lowerValue.includes('<summary')) {
           const summaryMatch = value.match(/<summary>([\s\S]*?)<\/summary>/i)
-          if (summaryMatch) {
+          if (summaryMatch?.[1]) {
             // If <summary> is separate from <details>, we still try to render it as a spoiler tag.
             // This might happen if there's a newline between <details> and <summary>.
             return `[SPOILER=${summaryMatch[1].trim()}]`
