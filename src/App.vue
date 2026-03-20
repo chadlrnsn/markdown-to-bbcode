@@ -1,8 +1,17 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import SplitLayout from './components/SplitLayout.vue'
 import MarkdownPane from './components/MarkdownPane.vue'
 import BBCodePane from './components/BBCodePane.vue'
 import SettingsPanel from './components/SettingsPanel.vue'
+import UpdatesModal from './components/UpdatesModal.vue'
+import { useAppStore } from './stores/app'
+
+const appStore = useAppStore()
+
+onMounted(() => {
+  appStore.fetchChangelog()
+})
 </script>
 
 <template>
@@ -10,6 +19,11 @@ import SettingsPanel from './components/SettingsPanel.vue'
     <header class="app-header">
       <h1>Markdown to Bitrix BBCode</h1>
       <div class="header-links">
+        <button class="update-btn" title="Что нового?" @click="appStore.openModal">
+          <svg height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
+            <path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+          </svg>
+        </button>
         <a href="https://github.com/chadlrnsn/markdown-to-bbcode" target="_blank" rel="noopener" class="repo-link" title="GitHub Repository">
           <svg height="24" viewBox="0 0 16 16" width="24" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
         </a>
@@ -29,6 +43,7 @@ import SettingsPanel from './components/SettingsPanel.vue'
         </template>
       </SplitLayout>
     </main>
+    <UpdatesModal />
   </div>
 </template>
 
@@ -135,14 +150,18 @@ body, html {
   gap: 16px;
 }
 
-.repo-link, .profile-link {
+.repo-link, .profile-link, .update-btn {
   color: #9ca3af;
   transition: color 0.2s;
   display: flex;
   align-items: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }
 
-.repo-link:hover {
+.repo-link:hover, .update-btn:hover {
   color: white;
 }
 
