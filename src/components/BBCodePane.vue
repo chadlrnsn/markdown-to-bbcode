@@ -224,6 +224,7 @@ const handleMouseMove = () => {
   flex: 1;
   overflow: auto;
   position: relative;
+  background-color: white;
 }
 .editor {
   position: absolute;

@@ -15,7 +15,7 @@
         :options="{ minimap: { enabled: false }, wordWrap: 'on' }"
         class="editor"
       />
-      <div v-else class="preview-content" v-html="store.markdownPreviewHtml"></div>
+      <div v-else class="preview-content ui-typography-container" v-html="store.markdownPreviewHtml"></div>
     </div>
   </div>
 </template>
@@ -58,6 +58,7 @@ const isPreview = ref(false)
   flex: 1;
   overflow: auto;
   position: relative;
+  background-color: white;
 }
 .editor {
   position: absolute;
@@ -68,6 +69,7 @@ const isPreview = ref(false)
 }
 .preview-content {
   padding: 16px;
-  font-family: sans-serif;
+  background: white;
+  height: 100%;
 }
 </style>

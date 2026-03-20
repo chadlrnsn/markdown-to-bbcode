@@ -74,26 +74,34 @@ body, html {
   font-family: monospace;
 }
 
-/* Bitrix24 Table Simulation */
-.b24-table-wrapper {
-  margin-bottom: 16px;
-  overflow-x: auto;
-}
-
-.b24-table {
+/* Common Table Styles */
+.ui-typography-container table {
   width: 100%;
   border-collapse: collapse;
   border: 1px solid #edeef0;
+  margin-bottom: 16px;
 }
 
-.b24-table td {
+.ui-typography-container td, .ui-typography-container th {
   padding: 10px 15px;
   border: 1px solid #edeef0;
   vertical-align: top;
 }
 
-.b24-table tr:nth-child(even) {
+.ui-typography-container th {
+  background-color: #f3f4f6;
+  font-weight: 600;
+  text-align: left;
+}
+
+.ui-typography-container tr:nth-child(even) {
   background-color: #fcfcfc;
+}
+
+/* Bitrix24 Table Simulation */
+.b24-table-wrapper {
+  margin-bottom: 16px;
+  overflow-x: auto;
 }
 </style>
 
