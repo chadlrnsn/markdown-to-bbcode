@@ -130,10 +130,10 @@ function renderNode(
     }
     
     case 'inlineCode':
-      return settings.code ? `[CODE]${node.value}[/CODE]` : node.value
+      return node.value
       
     case 'code':
-      return settings.code ? `[CODE]\n${node.value}\n[/CODE]` : node.value
+      return settings.code ? `[CODE]${node.value}[/CODE]` : node.value
       
     case 'blockquote': {
       const content = renderChildren(node.children, settings, context, raw).trim()

@@ -18,12 +18,12 @@ export function bbcodeToHtml(bbcode: string): string {
     [/\[U\](.*?)\[\/U\]/gsi, '<u>$1</u>'],
     [/\[URL=(.*?)\](.*?)\[\/URL\]/gsi, '<a href="$1" target="_blank">$2</a>'],
     [/\[IMG\](.*?)\[\/IMG\]/gsi, '<img src="$1" alt="image" style="max-width: 100%;" />'],
-    [/\[QUOTE\](.*?)\[\/QUOTE\]/gsi, '<blockquote>$1</blockquote>'],
     [/\[CODE\](.*?)\[\/CODE\]/gsi, '<pre><code>$1</code></pre>'],
     [/\[COLOR=(.*?)\](.*?)\[\/COLOR\]/gsi, '<span style="color: $1;">$2</span>']
   ]
 
   const sizeRegex = /\[SIZE=(.*?)\](.*?)\[\/SIZE\]/gsi
+  const quoteRegex = /\[QUOTE\](.*?)\[\/QUOTE\]/gsi
   const spoilerWithTitleRegex = /\[SPOILER=(.*?)\](.*?)\[\/SPOILER\]/gsi
   const spoilerWithoutTitleRegex = /\[SPOILER\](.*?)\[\/SPOILER\]/gsi
 
@@ -40,15 +40,22 @@ export function bbcodeToHtml(bbcode: string): string {
       return `<span style="font-size: ${fontSize};">${text}</span>`
     })
 
+    // Handle QUOTE
+    html = html.replace(quoteRegex, (match: string, content: string) => {
+      return `<blockquote>${content.trim()}</blockquote>`
+    })
+
     // Handle SPOILER with title
     html = html.replace(spoilerWithTitleRegex, (match: string, title: string, content: string) => {
-      const wrappedContent = content.trim().startsWith('<p') ? content : `<p class="ui-typography-paragraph ui-text-editor__paragraph ui-text-editor__ltr" dir="ltr"><span data-lexical-text="true">${content}</span></p>`
-      return `<details class="ui-typography-spoiler" open=""><summary tabindex="-1" class="ui-typography-spoiler-title ui-icon-set__scope ui-text-editor__ltr" dir="ltr"><span data-lexical-text="true">${title}</span></summary><div class="ui-typography-spoiler-content">${wrappedContent}</div></details>`
+      const trimmedContent = content.trim()
+      const wrappedContent = trimmedContent.startsWith('<p') ? trimmedContent : `<p class="ui-typography-paragraph ui-text-editor__paragraph ui-text-editor__ltr" dir="ltr"><span data-lexical-text="true">${trimmedContent}</span></p>`
+      return `<details class="ui-typography-spoiler" open=""><summary tabindex="-1" class="ui-typography-spoiler-title ui-icon-set__scope ui-text-editor__ltr" dir="ltr"><span data-lexical-text="true">${title.trim()}</span></summary><div class="ui-typography-spoiler-content">${wrappedContent}</div></details>`
     })
 
     // Handle SPOILER without title
     html = html.replace(spoilerWithoutTitleRegex, (match: string, content: string) => {
-      const wrappedContent = content.trim().startsWith('<p') ? content : `<p class="ui-typography-paragraph ui-text-editor__paragraph ui-text-editor__ltr" dir="ltr"><span data-lexical-text="true">${content}</span></p>`
+      const trimmedContent = content.trim()
+      const wrappedContent = trimmedContent.startsWith('<p') ? trimmedContent : `<p class="ui-typography-paragraph ui-text-editor__paragraph ui-text-editor__ltr" dir="ltr"><span data-lexical-text="true">${trimmedContent}</span></p>`
       return `<details class="ui-typography-spoiler" open=""><summary tabindex="-1" class="ui-typography-spoiler-title ui-icon-set__scope ui-text-editor__ltr" dir="ltr"><span data-lexical-text="true">Спойлер</span></summary><div class="ui-typography-spoiler-content">${wrappedContent}</div></details>`
     })
 
@@ -57,26 +64,37 @@ export function bbcodeToHtml(bbcode: string): string {
 
   // Bitrix style quotes: >> text
   html = html.replace(/(?:^|<br \/>)>>\s*(.*?)(?=<br \/>|$)/gi, (match: string, content: string) => {
-    return `<blockquote>${content}</blockquote>`
+    return `<blockquote>${content.trim()}</blockquote>`
   })
   html = html.replace(/<\/blockquote><br \/><blockquote>/gi, '<br />')
 
   // Tables
-  html = html.replace(/\[TABLE\](.*?)\[\/TABLE\]/gsi, '<div class="b24-table-wrapper"><table class="b24-table">$1</table></div>')
-  html = html.replace(/\[TR\](.*?)\[\/TR\]/gsi, '<tr>$1</tr>')
-  html = html.replace(/\[TD\](.*?)\[\/TD\]/gsi, '<td>$1</td>')
+  html = html.replace(/\[TABLE\](.*?)\[\/TABLE\]/gsi, (match: string, content: string) => `<div class="b24-table-wrapper"><table class="b24-table">${content.trim()}</table></div>`)
+  html = html.replace(/\[TR\](.*?)\[\/TR\]/gsi, (match: string, content: string) => `<tr>${content.trim()}</tr>`)
+  html = html.replace(/\[TD\](.*?)\[\/TD\]/gsi, (match: string, content: string) => `<td>${content.trim()}</td>`)
   html = html.replace(/\[HR\]/gi, '<hr />')
 
   // Lists
   html = html.replace(/\[LIST(?:=(.*?))?\](.*?)\[\/LIST\]/gsi, (match: string, type: string | undefined, content: string) => {
     const listTag = type === '1' ? 'ol' : 'ul'
-    const items = content.replace(/\[\*\](.*?)(?=\[\*\]|$)/gsi, '<li>$1</li>')
+    const items = content.trim().replace(/\[\*\](.*?)(?=\[\*\]|$)/gsi, (m: string, c: string) => `<li>${c.trim()}</li>`)
     return `<${listTag}>${items}</${listTag}>`
   })
 
-  // Newlines to <br> but avoid double breaks around blocks
-  html = html.replace(/(<table.*?>|<\/table>|<tr.*?>|<\/tr>|<td.*?>|<\/td>|<ul.*?>|<\/ul>|<ol.*?>|<\/ol>|<li>|<\/li>|<blockquote>|<\/blockquote>)\s*<br \/>/gi, '$1')
+  // Newlines to <br> 
   html = html.replace(/\n/g, '<br />')
+
+  // Clean up <br> that appear exactly between two block elements
+  // This removes structural newlines (e.g., between </tr> and <tr>) 
+  // without destroying intended empty lines around headings and text
+  const blockTags = 'table|/table|tr|/tr|td|/td|ul|/ul|ol|/ol|li|/li|blockquote|/blockquote|details|/details|summary|/summary|div|/div|hr'
+  const betweenBlocksRegex = new RegExp(`(<(?:${blockTags})[^>]*>)\\s*(?:<br \\/>\\s*)+(<(?:${blockTags})[^>]*>)`, 'gi')
+  
+  let prevHtml = ''
+  while (html !== prevHtml) {
+    prevHtml = html
+    html = html.replace(betweenBlocksRegex, '$1$2')
+  }
 
   return `<div class="ui-typography-container">${html}</div>`
 }
