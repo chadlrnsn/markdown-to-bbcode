@@ -1,48 +1,78 @@
-# md-to-bitrix-bbcode
+# Markdown to Bitrix BBCode Converter
 
-This template should help get you started developing with Vue 3 in Vite.
+Веб-инструмент для конвертации Markdown документации в BBCode формат, совместимый с редактором Битрикс24.
 
-## Recommended IDE Setup
+[English version](./README_EN.md)
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Возможности
 
-## Recommended Browser Setup
+- **Конвертация Markdown → BBCode** - полная поддержка элементов документации:
+  - Таблицы (`| cell | cell |`)
+  - Заголовки (`#`, `##`, `###`)
+  - Жирный текст (`**bold**`)
+  - Подчёркивание (`__underline__`)
+  - Списки (ordered/unordered)
+  - Вложенные списки
+  - Блокquote (`>`)
+  - Кодовые блоки (`code`)
+  - Спойлеры (`<details><summary>...</details>`)
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+- **Предпросмотр BBCode** - мгновенный предпросмотр результата
+- **Копирование для Битрикс** - копирует форматированный HTML в буфер обмена для вставки в редактор Битрикс24
 
-## Type Support for `.vue` Imports in TS
+## Использование
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
+### Установка
 
 ```sh
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### Запуск dev сервера
 
 ```sh
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+### Сборка
 
 ```sh
 npm run build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+### Запуск тестов
+
+```sh
+npm test
+```
+
+### Линтинг
 
 ```sh
 npm run lint
 ```
+
+### Проверка типов
+
+```sh
+npm run type-check
+```
+
+## Поддерживаемые элементы Markdown
+
+| Markdown                                             | BBCode                                  |
+| ---------------------------------------------------- | --------------------------------------- |
+| `# Title`                                            | `[SIZE=24][B]Title[/B][/SIZE]`          |
+| `**bold**`                                           | `[B]bold[/B]`                           |
+| `__underline__`                                      | `[U]underline[/U]`                      |
+| `- Item`                                             | `[*] Item`                              |
+| `1. Item`                                            | `[*] Item` (ordered)                    |
+| `> Quote`                                            | `>> Quote`                              |
+| `` `code` ``                                         | `` `code` ``                            |
+| ` ```code``` `                                       | `[CODE]code[/CODE]`                     |
+| `<details><summary>Title</summary>Content</details>` | `[SPOILER=Title]Content[/SPOILER]`      |
+| `\| cell \|`                                         | `[TABLE][TR][TD]cell[/TD][/TR][/TABLE]` |
+
+## Лицензия
+
+MIT
