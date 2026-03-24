@@ -8,7 +8,7 @@ export function markdownToHtml(markdown: string): string {
     const file = unified()
       .use(remarkParse)
       .use(remarkGfm)
-      .use(remarkHtml)
+      .use(remarkHtml, { sanitize: false })
       .processSync(markdown)
     return String(file)
   } catch (error) {
