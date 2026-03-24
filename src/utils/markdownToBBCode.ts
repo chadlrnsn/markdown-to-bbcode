@@ -294,7 +294,17 @@ function renderNode(
 
 export function markdownToBBCode(markdown: string, settings: ParserSettings): string {
   try {
-    const tree = unified().use(remarkParse).use(remarkGfm).parse(markdown)
+    // Pre-process: detect fenced code blocks without language (```code```)
+    // These are parsed as inlineCode but should be code blocks
+    const processedMarkdown = markdown.replace(/^```(.+?)```$/gm, (match, code) => {
+      // Only add newlines if code doesn't already contain them
+      if (!code.includes('\n')) {
+        return '```\n' + code + '\n```'
+      }
+      return match
+    })
+
+    const tree = unified().use(remarkParse).use(remarkGfm).parse(processedMarkdown)
     return renderNode(
       tree,
       settings,
@@ -305,7 +315,7 @@ export function markdownToBBCode(markdown: string, settings: ParserSettings): st
         inUnderline: false,
         inSpoiler: false,
       },
-      markdown,
+      processedMarkdown,
     ).trim()
   } catch (error) {
     console.error(

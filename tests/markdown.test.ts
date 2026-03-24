@@ -251,10 +251,46 @@ describe('markdownToBBCode', () => {
     expect(result).toContain('[CODE]')
   })
 
+  it('should convert triple backticks code blocks', () => {
+    const markdown = '```\ncode here\nmore code\n```'
+    const result = markdownToBBCode(markdown, defaultSettings)
+    expect(result).toContain('[CODE]')
+    expect(result).toContain('code here')
+    expect(result).toContain('more code')
+  })
+
+  it('should convert code blocks with language', () => {
+    const markdown = '```text\nNAVALTLOC 1,20,10,200,ТОКЕН\n```'
+    const result = markdownToBBCode(markdown, defaultSettings)
+    expect(result).toContain('[CODE]NAVALTLOC 1,20,10,200,ТОКЕН[/CODE]')
+  })
+
+  it('should convert code blocks without language specifier', () => {
+    const markdown = '```\nNAVALTLOC 1,20,10,200,ТОКЕН\nNAVREPLACE 5,1,10\n```'
+    const result = markdownToBBCode(markdown, defaultSettings)
+    expect(result).toContain('[CODE]')
+    expect(result).toContain('NAVALTLOC 1,20,10,200,ТОКЕН')
+    expect(result).toContain('NAVREPLACE 5,1,10')
+  })
+
+  it('should convert code blocks on single line without language', () => {
+    const markdown = '```NAVALTLOC 1,20,10,200,ТОКЕН```\n\n```NAVREPLACE 5,1,10```'
+    const result = markdownToBBCode(markdown, defaultSettings)
+    expect(result).toContain('[CODE]NAVALTLOC 1,20,10,200,ТОКЕН[/CODE]')
+    expect(result).toContain('[CODE]NAVREPLACE 5,1,10[/CODE]')
+  })
+
   it('should convert inline code correctly', () => {
     const markdown = 'This is `inline code` text'
     const result = markdownToBBCode(markdown, defaultSettings)
     expect(result).toContain('`inline code`')
+  })
+
+  it('should handle single backticks as plain text', () => {
+    const markdown = 'Use `command` to do something'
+    const result = markdownToBBCode(markdown, defaultSettings)
+    expect(result).toContain('`command`')
+    expect(result).not.toContain('[CODE]')
   })
 
   it('should convert details/summary to spoilers correctly', () => {
@@ -437,5 +473,48 @@ Test Content
     expect(html).toContain('<td>B</td>')
     expect(html).toContain('<td>1</td>')
     expect(html).toContain('<td>2</td>')
+  })
+})
+
+describe('linefeed and spacing', () => {
+  it('should not have excessive newlines between elements', () => {
+    const markdown = `# Heading
+
+Some text here
+
+- Item 1
+- Item 2
+
+Another paragraph.`
+    const result = markdownToBBCode(markdown, defaultSettings)
+
+    // Should not have more than 2 consecutive newlines
+    expect(result).not.toMatch(/\n{4,}/)
+  })
+
+  it('should handle line breaks in paragraphs correctly', () => {
+    const markdown = `Line 1
+Line 2
+Line 3`
+    const result = markdownToBBCode(markdown, defaultSettings)
+
+    // Should preserve the text without excessive newlines
+    expect(result).toContain('Line 1')
+    expect(result).toContain('Line 2')
+    expect(result).toContain('Line 3')
+  })
+
+  it('should handle code blocks without extra linefeeds', () => {
+    const markdown = `Some text before
+
+\`\`\`
+code here
+\`\`\`
+
+Some text after`
+    const result = markdownToBBCode(markdown, defaultSettings)
+
+    // Should not have excessive newlines around code blocks
+    expect(result).not.toMatch(/\n{4,}/)
   })
 })
