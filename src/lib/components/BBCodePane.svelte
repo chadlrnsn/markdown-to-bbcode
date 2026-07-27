@@ -8,7 +8,7 @@
 
 	let selectedColor = $state('#ff0000');
 	let selectedSize = $state('');
-	const sizes = ['12', '14', '16', '18', '20', '24', '30', '36'];
+	// const sizes = ['12', '14', '16', '18', '20', '24', '30', '36'];
 
 	let showTooltip = $state(false);
 	let tooltipX = $state(0);
