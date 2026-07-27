@@ -91,8 +91,8 @@
 
 <style>
 	.settings-panel {
-		background-color: #f9fafb;
-		border-bottom: 1px solid #e5e7eb;
+		background-color: #f8f9fa;
+		border-bottom: 1px solid #e1e3e1;
 		padding: 12px 24px;
 	}
 	.settings-header {
@@ -103,9 +103,11 @@
 	}
 	.settings-title {
 		font-size: 0.75rem;
-		font-weight: 600;
-		color: #6b7280;
+		font-weight: 500;
+		color: #444746;
 		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		font-family: 'Google Sans', Roboto, sans-serif;
 	}
 	.mode-selector {
 		display: flex;
@@ -114,37 +116,40 @@
 	}
 	.mode-label {
 		font-size: 0.75rem;
-		font-weight: 600;
-		color: #6b7280;
+		font-weight: 500;
+		color: #444746;
 		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		font-family: 'Google Sans', Roboto, sans-serif;
 	}
 	.mode-toggle {
 		display: flex;
-		border-radius: 4px;
-		overflow: hidden;
-		border: 1px solid #d1d5db;
+		border-radius: 9999px;
+		background: #e1e3e1;
+		padding: 3px;
+		gap: 2px;
 	}
 	.mode-btn {
-		background: white;
+		background: transparent;
 		border: none;
-		padding: 4px 12px;
+		padding: 4px 16px;
 		font-size: 0.75rem;
 		font-weight: 500;
+		font-family: 'Google Sans', Roboto, sans-serif;
 		cursor: pointer;
-		color: #374151;
+		color: #1f1f1f;
+		border-radius: 9999px;
 		transition:
 			background-color 0.2s,
 			color 0.2s;
 	}
-	.mode-btn:first-child {
-		border-right: 1px solid #d1d5db;
-	}
 	.mode-btn:hover:not(.active) {
-		background-color: #f3f4f6;
+		background-color: rgba(0, 0, 0, 0.06);
 	}
 	.mode-btn.active {
-		background-color: #3b82f6;
+		background-color: #0b57d0;
 		color: white;
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 	}
 	.settings-grid {
 		display: flex;
@@ -154,14 +159,15 @@
 	.setting-item {
 		display: flex;
 		align-items: center;
-		gap: 6px;
+		gap: 8px;
 		font-size: 0.875rem;
-		color: #374151;
+		color: #1f1f1f;
+		font-family: 'Roboto', sans-serif;
 		cursor: pointer;
 		transition: opacity 0.2s;
 	}
 	.setting-item.disabled {
-		opacity: 0.5;
+		opacity: 0.4;
 		cursor: not-allowed;
 	}
 	.setting-item.disabled input {
@@ -169,5 +175,8 @@
 	}
 	.setting-item input {
 		cursor: pointer;
+		accent-color: #0b57d0;
+		width: 16px;
+		height: 16px;
 	}
 </style>

@@ -38,23 +38,30 @@
 		width: 100%;
 	}
 	.pane-header {
-		padding: 8px;
-		background-color: #f3f4f6;
-		border-bottom: 1px solid #e5e7eb;
+		padding: 8px 16px;
+		background-color: #f8f9fa;
+		border-bottom: 1px solid #e1e3e1;
 	}
 	.tabs button {
 		padding: 6px 16px;
 		margin-right: 8px;
 		cursor: pointer;
-		background: white;
-		border: 1px solid #d1d5db;
-		border-radius: 4px;
-		font-size: 14px;
+		background: #e1e3e1;
+		border: none;
+		border-radius: 9999px;
+		font-size: 13px;
+		font-weight: 500;
+		font-family: 'Google Sans', Roboto, sans-serif;
+		color: #1f1f1f;
+		transition: all 0.2s ease;
+	}
+	.tabs button:hover:not(.active) {
+		background: #d3d5d3;
 	}
 	.tabs button.active {
-		background: #3b82f6;
+		background: #0b57d0;
 		color: white;
-		border-color: #3b82f6;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 	}
 	.pane-content {
 		flex: 1;

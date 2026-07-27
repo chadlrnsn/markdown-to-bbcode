@@ -38,12 +38,12 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
-		background-color: rgba(0, 0, 0, 0.5);
+		background-color: rgba(0, 0, 0, 0.4);
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		z-index: 1000;
-		backdrop-filter: blur(2px);
+		backdrop-filter: blur(4px);
 	}
 
 	.modal-container {
@@ -51,17 +51,17 @@
 		width: 90%;
 		max-width: 500px;
 		max-height: 80vh;
-		border-radius: 8px;
+		border-radius: 28px;
 		display: flex;
 		flex-direction: column;
 		box-shadow:
-			0 10px 25px -5px rgba(0, 0, 0, 0.1),
-			0 8px 10px -6px rgba(0, 0, 0, 0.1);
+			0 14px 28px rgba(0, 0, 0, 0.15),
+			0 10px 10px rgba(0, 0, 0, 0.1);
 	}
 
 	.modal-header {
-		padding: 16px 20px;
-		border-bottom: 1px solid #eef2f4;
+		padding: 24px 24px 16px;
+		border-bottom: 1px solid #e1e3e1;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -69,48 +69,62 @@
 
 	.modal-header h3 {
 		margin: 0;
-		font-size: 1.1rem;
-		color: #333;
+		font-size: 1.25rem;
+		font-family: 'Google Sans', Roboto, sans-serif;
+		font-weight: 500;
+		color: #1f1f1f;
 	}
 
 	.close-btn {
-		background: none;
+		background: transparent;
 		border: none;
 		font-size: 1.5rem;
 		cursor: pointer;
-		color: #9ca3af;
+		color: #444746;
 		line-height: 1;
+		border-radius: 50%;
+		width: 32px;
+		height: 32px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: background-color 0.2s;
 	}
 
 	.close-btn:hover {
-		color: #374151;
+		background-color: rgba(0, 0, 0, 0.06);
+		color: #1f1f1f;
 	}
 
 	.modal-body {
-		padding: 20px;
+		padding: 24px;
 		overflow-y: auto;
 		flex: 1;
+		font-family: 'Roboto', sans-serif;
 	}
 
 	.modal-footer {
-		padding: 16px 20px;
-		border-top: 1px solid #eef2f4;
+		padding: 16px 24px 24px;
+		border-top: 1px solid #e1e3e1;
 		display: flex;
 		justify-content: flex-end;
 	}
 
 	.primary-btn {
-		background-color: #3b82f6;
+		background-color: #0b57d0;
 		color: white;
 		border: none;
-		padding: 8px 24px;
-		border-radius: 4px;
+		padding: 10px 24px;
+		border-radius: 9999px;
 		font-weight: 500;
+		font-family: 'Google Sans', Roboto, sans-serif;
 		cursor: pointer;
-		transition: background-color 0.2s;
+		transition: background-color 0.2s, box-shadow 0.2s;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 	}
 
 	.primary-btn:hover {
-		background-color: #2563eb;
+		background-color: #0842a0;
+		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 	}
 </style>

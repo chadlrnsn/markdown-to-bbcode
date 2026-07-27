@@ -68,24 +68,26 @@
 	.split-gutter {
 		width: 8px;
 		cursor: col-resize;
-		background-color: #f3f4f6;
+		background-color: #f8f9fa;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		transition: background-color 0.2s;
 		z-index: 10;
+		border-left: 1px solid #e1e3e1;
+		border-right: 1px solid #e1e3e1;
 	}
 
 	.split-gutter:hover,
 	.is-resizing .split-gutter {
-		background-color: #e5e7eb;
+		background-color: #e1e3e1;
 	}
 
 	.gutter-line {
 		width: 2px;
 		height: 40px;
-		background-color: #d1d5db;
-		border-radius: 1px;
+		background-color: #747775;
+		border-radius: 9999px;
 	}
 
 	.is-resizing {

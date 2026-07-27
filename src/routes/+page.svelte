@@ -77,35 +77,39 @@
 
 	.app-header {
 		padding: 12px 24px;
-		background-color: #1f2937;
+		background-color: #0b57d0;
 		color: white;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 	}
 
 	.header-links {
 		display: flex;
 		align-items: center;
-		gap: 16px;
+		gap: 12px;
 	}
 
 	.repo-link,
 	.profile-link,
 	.update-btn {
-		color: #9ca3af;
-		transition: color 0.2s;
+		color: rgba(255, 255, 255, 0.85);
+		transition: all 0.2s ease;
 		display: flex;
 		align-items: center;
+		justify-content: center;
 		background: none;
 		border: none;
-		padding: 0;
+		padding: 6px;
+		border-radius: 9999px;
 		cursor: pointer;
 	}
 
 	.repo-link:hover,
 	.update-btn:hover {
 		color: white;
+		background-color: rgba(255, 255, 255, 0.15);
 	}
 
 	.avatar {
@@ -117,12 +121,15 @@
 	}
 
 	.profile-link:hover .avatar {
-		border-color: #3b82f6;
+		border-color: #d3e3fd;
 	}
 
 	.app-header h1 {
 		margin: 0;
 		font-size: 1.25rem;
+		font-weight: 500;
+		font-family: 'Google Sans', Roboto, sans-serif;
+		letter-spacing: -0.01em;
 	}
 
 	.app-main {

@@ -106,7 +106,7 @@
 			</button>
 		</div>
 
-		{#if !isPreview}
+		<!-- {#if !isPreview}
 			<div class="toolbar">
 				<input
 					type="color"
@@ -124,7 +124,7 @@
 				<button onclick={() => applyFormat('I')} title="Italic"><i>I</i></button>
 				<button onclick={() => applyFormat('U')} title="Underline"><u>U</u></button>
 			</div>
-		{/if}
+		{/if} -->
 	</div>
 
 	<div class="pane-content">
@@ -166,9 +166,9 @@
 		position: relative;
 	}
 	.pane-header {
-		padding: 8px;
-		background-color: #f3f4f6;
-		border-bottom: 1px solid #e5e7eb;
+		padding: 8px 16px;
+		background-color: #f8f9fa;
+		border-bottom: 1px solid #e1e3e1;
 		display: flex;
 		align-items: center;
 		gap: 16px;
@@ -177,58 +177,77 @@
 		display: flex;
 	}
 	.tabs button {
-		padding: 6px 12px;
-		margin-right: 4px;
+		padding: 6px 16px;
+		margin-right: 6px;
 		cursor: pointer;
-		background: white;
-		border: 1px solid #d1d5db;
-		border-radius: 4px;
+		background: #e1e3e1;
+		border: none;
+		border-radius: 9999px;
 		font-size: 13px;
+		font-weight: 500;
+		font-family: 'Google Sans', Roboto, sans-serif;
+		color: #1f1f1f;
+		transition: all 0.2s ease;
+	}
+	.tabs button:hover:not(.active) {
+		background: #d3d5d3;
 	}
 	.tabs button.active {
-		background: #3b82f6;
+		background: #0b57d0;
 		color: white;
-		border-color: #3b82f6;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 	}
 
 	.actions {
 		display: flex;
 	}
 	.copy-button {
-		padding: 6px 12px;
+		padding: 6px 16px;
 		cursor: pointer;
-		background: #10b981;
+		background: #137333;
 		color: white;
-		border: 1px solid #059669;
-		border-radius: 4px;
+		border: none;
+		border-radius: 9999px;
 		font-size: 13px;
-		font-weight: 600;
+		font-weight: 500;
+		font-family: 'Google Sans', Roboto, sans-serif;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+		transition: all 0.2s ease;
 	}
 	.copy-button:hover {
-		background: #059669;
+		background: #0f5223;
+		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 	}
 
 	.toolbar {
 		display: flex;
 		align-items: center;
 		gap: 8px;
-		padding-left: 8px;
-		border-left: 1px solid #d1d5db;
+		padding-left: 12px;
+		border-left: 1px solid #e1e3e1;
 	}
 	.toolbar button,
 	.toolbar select {
-		padding: 4px 8px;
+		padding: 4px 10px;
 		cursor: pointer;
 		background: white;
-		border: 1px solid #d1d5db;
-		border-radius: 4px;
+		border: 1px solid #c4c7c5;
+		border-radius: 8px;
 		font-size: 12px;
+		font-family: 'Roboto', sans-serif;
+		color: #1f1f1f;
+		transition: border-color 0.2s;
+	}
+	.toolbar button:hover,
+	.toolbar select:hover {
+		border-color: #0b57d0;
 	}
 	.toolbar input[type='color'] {
 		width: 30px;
 		height: 24px;
 		padding: 0;
-		border: 1px solid #d1d5db;
+		border: 1px solid #c4c7c5;
+		border-radius: 4px;
 		cursor: pointer;
 	}
 
@@ -254,13 +273,13 @@
 	.floating-tooltip {
 		position: absolute;
 		z-index: 1000;
-		background: #1f2937;
+		background: #1f1f1f;
 		color: white;
-		padding: 4px;
-		border-radius: 4px;
+		padding: 4px 6px;
+		border-radius: 8px;
 		display: flex;
 		gap: 4px;
-		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 	}
 	.floating-tooltip button {
 		background: transparent;
@@ -269,9 +288,10 @@
 		padding: 4px 8px;
 		cursor: pointer;
 		font-size: 12px;
-		border-radius: 2px;
+		font-family: 'Google Sans', Roboto, sans-serif;
+		border-radius: 4px;
 	}
 	.floating-tooltip button:hover {
-		background: rgba(255, 255, 255, 0.1);
+		background: rgba(255, 255, 255, 0.15);
 	}
 </style>
