@@ -7,6 +7,29 @@
 ## Добавлен
 
 - Новый дизайн Material UI
+- Горячие клавиши (Hotkeys) в Markdown-редакторе
+- Форматирование через контекстное меню Monaco (Right-Click)
+  В MonacoEditor.svelte зарегистрированы встроенные сочетания клавиш (работают на Windows/Linux Ctrl и macOS Cmd):
+  - Ctrl + B — Жирный (выделенный текст)
+  - Ctrl + I — Курсив (выделенный текст)
+  - Ctrl + U — <u>Подчёркнутый</u> (<u>выделенный текст</u>)
+  - Ctrl + Shift + X — <s>Зачёркнутый</s> (выделенный текст)
+  - Ctrl + ~ (Backquote) — Инлайн код ( код )
+  - Ctrl + K — Ссылка (текст)
+  
+  Умная отмена: Если выделенный текст уже был отформатирован (например текст), повторное нажатие hotkey снимает
+  форматирование обратно в текст.
+
+- Форматирование через контекстное меню Monaco (Right-Click)
+  При клике правой кнопкой мыши по выделенному тексту в редакторе открывается контекстное меню с пунктами в группе модификации:
+  - Format: Bold (text)
+  - Format: Italic (text)
+  - Format: Underline (<u>text</u>)
+  - Format: Strikethrough (text)
+  - Format: Inline Code (code)
+  - Format: Link (text)
+  - Format: Blockquote (> text)
+  - Format: Code Block (code)
 
 
 # 2.0.0

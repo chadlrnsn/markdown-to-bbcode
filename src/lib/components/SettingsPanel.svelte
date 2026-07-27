@@ -27,64 +27,134 @@
 	</div>
 	<div class="settings-grid">
 		<label class="setting-item">
-			<input type="checkbox" bind:checked={editorStore.settings.headings} />
-			Headings
+			<div class="custom-checkbox">
+				<input type="checkbox" bind:checked={editorStore.settings.headings} />
+				<div class="checkbox-box">
+					<svg class="checkmark" viewBox="0 0 24 24">
+						<polyline points="20 6 9 17 4 12" />
+					</svg>
+				</div>
+			</div>
+			<span>Headings</span>
 		</label>
 		<label class="setting-item" class:disabled={editorStore.mode === 'chat'}>
-			<input
-				type="checkbox"
-				checked={editorStore.mode === 'chat' ? false : editorStore.settings.lists}
-				disabled={editorStore.mode === 'chat'}
-				onchange={(e) => (editorStore.settings.lists = e.currentTarget.checked)}
-			/>
-			Lists
+			<div class="custom-checkbox">
+				<input
+					type="checkbox"
+					checked={editorStore.mode === 'chat' ? false : editorStore.settings.lists}
+					disabled={editorStore.mode === 'chat'}
+					onchange={(e) => (editorStore.settings.lists = e.currentTarget.checked)}
+				/>
+				<div class="checkbox-box">
+					<svg class="checkmark" viewBox="0 0 24 24">
+						<polyline points="20 6 9 17 4 12" />
+					</svg>
+				</div>
+			</div>
+			<span>Lists</span>
 		</label>
 		<label class="setting-item" class:disabled={editorStore.mode === 'chat'}>
-			<input
-				type="checkbox"
-				checked={editorStore.mode === 'chat' ? false : editorStore.settings.tables}
-				disabled={editorStore.mode === 'chat'}
-				onchange={(e) => (editorStore.settings.tables = e.currentTarget.checked)}
-			/>
-			Tables
+			<div class="custom-checkbox">
+				<input
+					type="checkbox"
+					checked={editorStore.mode === 'chat' ? false : editorStore.settings.tables}
+					disabled={editorStore.mode === 'chat'}
+					onchange={(e) => (editorStore.settings.tables = e.currentTarget.checked)}
+				/>
+				<div class="checkbox-box">
+					<svg class="checkmark" viewBox="0 0 24 24">
+						<polyline points="20 6 9 17 4 12" />
+					</svg>
+				</div>
+			</div>
+			<span>Tables</span>
 		</label>
 		<label class="setting-item">
-			<input type="checkbox" bind:checked={editorStore.settings.quotes} />
-			Quotes
+			<div class="custom-checkbox">
+				<input type="checkbox" bind:checked={editorStore.settings.quotes} />
+				<div class="checkbox-box">
+					<svg class="checkmark" viewBox="0 0 24 24">
+						<polyline points="20 6 9 17 4 12" />
+					</svg>
+				</div>
+			</div>
+			<span>Quotes</span>
 		</label>
 		<label class="setting-item">
-			<input type="checkbox" bind:checked={editorStore.settings.formatting} />
-			Formatting (B/I/S/U)
+			<div class="custom-checkbox">
+				<input type="checkbox" bind:checked={editorStore.settings.formatting} />
+				<div class="checkbox-box">
+					<svg class="checkmark" viewBox="0 0 24 24">
+						<polyline points="20 6 9 17 4 12" />
+					</svg>
+				</div>
+			</div>
+			<span>Formatting (B/I/S/U)</span>
 		</label>
 		<label class="setting-item">
-			<input type="checkbox" bind:checked={editorStore.settings.links} />
-			Links
+			<div class="custom-checkbox">
+				<input type="checkbox" bind:checked={editorStore.settings.links} />
+				<div class="checkbox-box">
+					<svg class="checkmark" viewBox="0 0 24 24">
+						<polyline points="20 6 9 17 4 12" />
+					</svg>
+				</div>
+			</div>
+			<span>Links</span>
 		</label>
 		<label class="setting-item">
-			<input type="checkbox" bind:checked={editorStore.settings.images} />
-			Images
+			<div class="custom-checkbox">
+				<input type="checkbox" bind:checked={editorStore.settings.images} />
+				<div class="checkbox-box">
+					<svg class="checkmark" viewBox="0 0 24 24">
+						<polyline points="20 6 9 17 4 12" />
+					</svg>
+				</div>
+			</div>
+			<span>Images</span>
 		</label>
 		<label class="setting-item">
-			<input type="checkbox" bind:checked={editorStore.settings.code} />
-			Code Blocks
+			<div class="custom-checkbox">
+				<input type="checkbox" bind:checked={editorStore.settings.code} />
+				<div class="checkbox-box">
+					<svg class="checkmark" viewBox="0 0 24 24">
+						<polyline points="20 6 9 17 4 12" />
+					</svg>
+				</div>
+			</div>
+			<span>Code Blocks</span>
 		</label>
 		<label class="setting-item" class:disabled={editorStore.mode === 'chat'}>
-			<input
-				type="checkbox"
-				checked={editorStore.mode === 'chat' ? false : editorStore.settings.spoilers}
-				disabled={editorStore.mode === 'chat'}
-				onchange={(e) => (editorStore.settings.spoilers = e.currentTarget.checked)}
-			/>
-			Spoilers
+			<div class="custom-checkbox">
+				<input
+					type="checkbox"
+					checked={editorStore.mode === 'chat' ? false : editorStore.settings.spoilers}
+					disabled={editorStore.mode === 'chat'}
+					onchange={(e) => (editorStore.settings.spoilers = e.currentTarget.checked)}
+				/>
+				<div class="checkbox-box">
+					<svg class="checkmark" viewBox="0 0 24 24">
+						<polyline points="20 6 9 17 4 12" />
+					</svg>
+				</div>
+			</div>
+			<span>Spoilers</span>
 		</label>
 		<label class="setting-item" class:disabled={editorStore.mode === 'chat'}>
-			<input
-				type="checkbox"
-				checked={editorStore.mode === 'chat' ? false : editorStore.settings.hr}
-				disabled={editorStore.mode === 'chat'}
-				onchange={(e) => (editorStore.settings.hr = e.currentTarget.checked)}
-			/>
-			Separators (HR)
+			<div class="custom-checkbox">
+				<input
+					type="checkbox"
+					checked={editorStore.mode === 'chat' ? false : editorStore.settings.hr}
+					disabled={editorStore.mode === 'chat'}
+					onchange={(e) => (editorStore.settings.hr = e.currentTarget.checked)}
+				/>
+				<div class="checkbox-box">
+					<svg class="checkmark" viewBox="0 0 24 24">
+						<polyline points="20 6 9 17 4 12" />
+					</svg>
+				</div>
+			</div>
+			<span>Separators (HR)</span>
 		</label>
 	</div>
 </div>
@@ -164,19 +234,80 @@
 		color: #1f1f1f;
 		font-family: 'Roboto', sans-serif;
 		cursor: pointer;
+		user-select: none;
 		transition: opacity 0.2s;
 	}
 	.setting-item.disabled {
-		opacity: 0.4;
+		opacity: 0.38;
 		cursor: not-allowed;
 	}
-	.setting-item.disabled input {
+	.setting-item.disabled .custom-checkbox input {
 		cursor: not-allowed;
 	}
-	.setting-item input {
+
+	/* Custom Material 3 Checkbox */
+	.custom-checkbox {
+		position: relative;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 18px;
+		height: 18px;
+	}
+
+	.custom-checkbox input[type='checkbox'] {
+		position: absolute;
+		opacity: 0;
+		width: 100%;
+		height: 100%;
+		margin: 0;
 		cursor: pointer;
-		accent-color: #0b57d0;
-		width: 16px;
-		height: 16px;
+		z-index: 2;
+	}
+
+	.checkbox-box {
+		width: 18px;
+		height: 18px;
+		border: 2px solid #747775;
+		border-radius: 4px;
+		background-color: transparent;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+		box-sizing: border-box;
+	}
+
+	.custom-checkbox input[type='checkbox']:hover:not(:disabled) ~ .checkbox-box {
+		border-color: #0b57d0;
+		background-color: rgba(11, 87, 208, 0.08);
+	}
+
+	.custom-checkbox input[type='checkbox']:checked ~ .checkbox-box {
+		background-color: #0b57d0;
+		border-color: #0b57d0;
+	}
+
+	.custom-checkbox input[type='checkbox']:focus-visible ~ .checkbox-box {
+		outline: 2px solid #0b57d0;
+		outline-offset: 2px;
+	}
+
+	.checkmark {
+		width: 13px;
+		height: 13px;
+		fill: none;
+		stroke: white;
+		stroke-width: 3.2;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		opacity: 0;
+		transform: scale(0.5);
+		transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.custom-checkbox input[type='checkbox']:checked ~ .checkbox-box .checkmark {
+		opacity: 1;
+		transform: scale(1);
 	}
 </style>
