@@ -3,94 +3,94 @@ version: alpha
 name: Material Markdown to Bitrix BBCode
 description: A Google Material Design 3 (M3) styled design system for converting Markdown into Bitrix24 compatible BBCode and HTML previews.
 colors:
-  primary: "#0B57D0"
-  primary-hover: "#0842A0"
-  secondary: "#444746"
-  tertiary: "#1A73E8"
-  success: "#137333"
-  success-hover: "#0F5223"
-  neutral: "#F8F9FA"
-  surface: "#FFFFFF"
-  surface-variant: "#E1E3E1"
-  text-dark: "#1F1F1F"
+  primary: '#0B57D0'
+  primary-hover: '#0842A0'
+  secondary: '#444746'
+  tertiary: '#1A73E8'
+  success: '#137333'
+  success-hover: '#0F5223'
+  neutral: '#F8F9FA'
+  surface: '#FFFFFF'
+  surface-variant: '#E1E3E1'
+  text-dark: '#1F1F1F'
 typography:
   h1:
     fontFamily: "'Google Sans', Roboto, system-ui, -apple-system, sans-serif"
-    fontSize: "1.25rem"
+    fontSize: '1.25rem'
     fontWeight: 500
-    lineHeight: "1.2"
+    lineHeight: '1.2'
   h2:
     fontFamily: "'Google Sans', Roboto, system-ui, -apple-system, sans-serif"
-    fontSize: "1.1rem"
+    fontSize: '1.1rem'
     fontWeight: 500
-    lineHeight: "1.3"
+    lineHeight: '1.3'
   body-md:
-    fontFamily: "Roboto, system-ui, -apple-system, sans-serif"
-    fontSize: "0.875rem"
-    lineHeight: "1.5"
+    fontFamily: 'Roboto, system-ui, -apple-system, sans-serif'
+    fontSize: '0.875rem'
+    lineHeight: '1.5'
   body-sm:
-    fontFamily: "Roboto, system-ui, -apple-system, sans-serif"
-    fontSize: "0.75rem"
-    lineHeight: "1.4"
+    fontFamily: 'Roboto, system-ui, -apple-system, sans-serif'
+    fontSize: '0.75rem'
+    lineHeight: '1.4'
   code:
     fontFamily: "'Roboto Mono', monospace"
-    fontSize: "0.875rem"
+    fontSize: '0.875rem'
 rounded:
-  sm: "8px"
-  md: "12px"
-  lg: "16px"
-  xl: "28px"
-  full: "9999px"
+  sm: '8px'
+  md: '12px'
+  lg: '16px'
+  xl: '28px'
+  full: '9999px'
 spacing:
-  xs: "4px"
-  sm: "8px"
-  md: "12px"
-  lg: "16px"
-  xl: "24px"
+  xs: '4px'
+  sm: '8px'
+  md: '12px'
+  lg: '16px'
+  xl: '24px'
 components:
   top-app-bar:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.surface}"
-    padding: "12px 24px"
+    backgroundColor: '{colors.primary}'
+    textColor: '{colors.surface}'
+    padding: '12px 24px'
   label-muted:
-    textColor: "{colors.secondary}"
+    textColor: '{colors.secondary}'
   link-accent:
-    textColor: "{colors.tertiary}"
+    textColor: '{colors.tertiary}'
   tab-button:
-    backgroundColor: "{colors.surface-variant}"
-    textColor: "{colors.text-dark}"
-    rounded: "{rounded.full}"
-    padding: "6px 16px"
+    backgroundColor: '{colors.surface-variant}'
+    textColor: '{colors.text-dark}'
+    rounded: '{rounded.full}'
+    padding: '6px 16px'
   tab-button-active:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.surface}"
-    rounded: "{rounded.full}"
-    padding: "6px 16px"
+    backgroundColor: '{colors.primary}'
+    textColor: '{colors.surface}'
+    rounded: '{rounded.full}'
+    padding: '6px 16px'
   button-primary:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.surface}"
-    rounded: "{rounded.full}"
-    padding: "8px 24px"
+    backgroundColor: '{colors.primary}'
+    textColor: '{colors.surface}'
+    rounded: '{rounded.full}'
+    padding: '8px 24px'
   button-primary-hover:
-    backgroundColor: "{colors.primary-hover}"
-    textColor: "{colors.surface}"
+    backgroundColor: '{colors.primary-hover}'
+    textColor: '{colors.surface}'
   button-success:
-    backgroundColor: "{colors.success}"
-    textColor: "{colors.surface}"
-    rounded: "{rounded.full}"
-    padding: "6px 16px"
+    backgroundColor: '{colors.success}'
+    textColor: '{colors.surface}'
+    rounded: '{rounded.full}'
+    padding: '6px 16px'
   button-success-hover:
-    backgroundColor: "{colors.success-hover}"
-    textColor: "{colors.surface}"
+    backgroundColor: '{colors.success-hover}'
+    textColor: '{colors.surface}'
   surface-background:
-    backgroundColor: "{colors.neutral}"
-    textColor: "{colors.text-dark}"
-    padding: "12px 24px"
+    backgroundColor: '{colors.neutral}'
+    textColor: '{colors.text-dark}'
+    padding: '12px 24px'
   modal-dialog:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.text-dark}"
-    rounded: "{rounded.xl}"
-    padding: "24px"
+    backgroundColor: '{colors.surface}'
+    textColor: '{colors.text-dark}'
+    rounded: '{rounded.xl}'
+    padding: '24px'
 ---
 
 ## Overview

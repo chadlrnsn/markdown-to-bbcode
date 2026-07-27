@@ -47,7 +47,9 @@
 
 		if (prefix && suffix && selectedText.startsWith(prefix) && selectedText.endsWith(suffix)) {
 			const unwrapped = selectedText.slice(prefix.length, selectedText.length - suffix.length);
-			editorRef.executeEdits('toolbar-format', [{ range: selection, text: unwrapped, forceMoveMarkers: true }]);
+			editorRef.executeEdits('toolbar-format', [
+				{ range: selection, text: unwrapped, forceMoveMarkers: true }
+			]);
 		} else if (type === 'QUOTE') {
 			const startLine = selection.startLineNumber;
 			const endLine = selection.endLineNumber;
@@ -55,15 +57,23 @@
 			for (let i = startLine; i <= endLine; i++) {
 				const lineContent = model.getLineContent(i);
 				if (lineContent.startsWith('> ')) {
-					edits.push({ range: { startLineNumber: i, startColumn: 1, endLineNumber: i, endColumn: 3 }, text: '' });
+					edits.push({
+						range: { startLineNumber: i, startColumn: 1, endLineNumber: i, endColumn: 3 },
+						text: ''
+					});
 				} else {
-					edits.push({ range: { startLineNumber: i, startColumn: 1, endLineNumber: i, endColumn: 1 }, text: '> ' });
+					edits.push({
+						range: { startLineNumber: i, startColumn: 1, endLineNumber: i, endColumn: 1 },
+						text: '> '
+					});
 				}
 			}
 			editorRef.executeEdits('toolbar-format', edits);
 		} else {
 			const replacement = `${prefix}${selectedText || ''}${suffix}`;
-			editorRef.executeEdits('toolbar-format', [{ range: selection, text: replacement, forceMoveMarkers: true }]);
+			editorRef.executeEdits('toolbar-format', [
+				{ range: selection, text: replacement, forceMoveMarkers: true }
+			]);
 		}
 
 		editorRef.focus();
@@ -82,8 +92,12 @@
 				<button onclick={() => applyFormat('B')} title="Bold (Ctrl+B)"><b>B</b></button>
 				<button onclick={() => applyFormat('I')} title="Italic (Ctrl+I)"><i>I</i></button>
 				<button onclick={() => applyFormat('U')} title="Underline (Ctrl+U)"><u>U</u></button>
-				<button onclick={() => applyFormat('S')} title="Strikethrough (Ctrl+Shift+X)"><s>S</s></button>
-				<button onclick={() => applyFormat('CODE')} title="Inline Code (Ctrl+`)"><code>&lt;&gt;</code></button>
+				<button onclick={() => applyFormat('S')} title="Strikethrough (Ctrl+Shift+X)"
+					><s>S</s></button
+				>
+				<button onclick={() => applyFormat('CODE')} title="Inline Code (Ctrl+`)"
+					><code>&lt;&gt;</code></button
+				>
 				<button onclick={() => applyFormat('QUOTE')} title="Quote">&ldquo;&rdquo;</button>
 			</div>
 		{/if}

@@ -119,7 +119,9 @@
 		font-weight: 500;
 		font-family: 'Google Sans', Roboto, sans-serif;
 		cursor: pointer;
-		transition: background-color 0.2s, box-shadow 0.2s;
+		transition:
+			background-color 0.2s,
+			box-shadow 0.2s;
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 	}
 
