@@ -22,6 +22,10 @@ interface RenderContext {
 	inStrike: boolean;
 	inUnderline: boolean;
 	inSpoiler: boolean;
+	listContext?: {
+		ordered: boolean;
+		index: number;
+	};
 }
 
 /**
@@ -229,16 +233,45 @@ function renderNode(
 		}
 
 		case 'list': {
-			const content = renderChildren(node.children, settings, context, raw).trim();
-			if (!settings.lists) return content;
+			const isOrdered = Boolean((node as { ordered?: boolean | null }).ordered);
+			const startNum = (node as { start?: number | null }).start ?? 1;
 
-			const type = (node as { ordered?: boolean | null }).ordered ? '=1' : '';
+			const childrenNodes = (node as { children?: Content[] }).children || [];
+			const itemResults = childrenNodes.map((child, index) =>
+				renderNode(
+					child,
+					settings,
+					{
+						...context,
+						listContext: {
+							ordered: isOrdered,
+							index: startNum + index
+						}
+					},
+					raw
+				)
+			);
+
+			const content = itemResults.join('\n').trim();
+
+			if (!settings.lists) {
+				return content;
+			}
+
+			const type = isOrdered ? '=1' : '';
 			return `\n[LIST${type}]\n${content}\n[/LIST]\n`;
 		}
 
 		case 'listItem': {
 			const content = renderChildren(node.children, settings, context, raw).trim();
-			return settings.lists ? `[*] ${content}` : content;
+			if (settings.lists) {
+				return `[*] ${content}`;
+			}
+			const listCtx = context.listContext;
+			if (listCtx?.ordered) {
+				return `${listCtx.index}. ${content}`;
+			}
+			return `- ${content}`;
 		}
 
 		case 'heading': {

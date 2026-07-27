@@ -8,7 +8,7 @@
 
 	let selectedColor = $state('#ff0000');
 	let selectedSize = $state('');
-	// const sizes = ['12', '14', '16', '18', '20', '24', '30', '36'];
+	const sizes = ['12', '14', '16', '18', '20', '24', '30', '36'];
 
 	let showTooltip = $state(false);
 	let tooltipX = $state(0);
@@ -106,7 +106,7 @@
 			</button>
 		</div>
 
-		<!-- {#if !isPreview}
+		{#if !isPreview}
 			<div class="toolbar">
 				<input
 					type="color"
@@ -124,7 +124,7 @@
 				<button onclick={() => applyFormat('I')} title="Italic"><i>I</i></button>
 				<button onclick={() => applyFormat('U')} title="Underline"><u>U</u></button>
 			</div>
-		{/if} -->
+		{/if}
 	</div>
 
 	<div class="pane-content">

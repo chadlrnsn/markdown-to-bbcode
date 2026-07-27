@@ -557,4 +557,18 @@ content
 		expect(bbcode).not.toContain('[SPOILER=Spoiler]');
 		expect(bbcode).not.toContain('[HR]');
 	});
+
+	it('should preserve bullet dashes and numbers in chat mode without [LIST] tags', () => {
+		editorStore.markdownText = `- Item 1\n- Item 2\n\n1. First\n2. Second`;
+
+		editorStore.mode = 'chat';
+		editorStore.syncBBCode();
+		const bbcode = editorStore.bbcodeText;
+
+		expect(bbcode).not.toContain('[LIST]');
+		expect(bbcode).toContain('- Item 1');
+		expect(bbcode).toContain('- Item 2');
+		expect(bbcode).toContain('1. First');
+		expect(bbcode).toContain('2. Second');
+	});
 });
